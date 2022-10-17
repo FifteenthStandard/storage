@@ -54,10 +54,10 @@ public class FilePerValueKeyValueStore : IKeyValueStore
         var values = new List<T>();
         foreach (var file in files)
         {
-            var currentSortKey = Path.GetFileName(file);
+            var currentSortKey = Path.GetFileNameWithoutExtension(file);
 
-            if (!LessThan(file, sortKeyEnd)) break;
-            if (!LessThan(sortKeyStart, file, true)) continue;
+            if (!LessThan(currentSortKey, sortKeyEnd)) break;
+            if (!LessThan(sortKeyStart, currentSortKey, true)) continue;
 
             values.Add(await GetFromFileAsync<T>(file));
         }
