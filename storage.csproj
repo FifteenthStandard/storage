@@ -4,11 +4,21 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>FifteenthStandard.Storage</PackageId>
+    <Version>1.0.3</Version>
+    <Authors>Curtis Lusmore</Authors>
+    <Company>Fifteenth Standard</Company>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.6.1" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.13.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\"/>
+    <None Include="docs\*.md" Pack="true" PackagePath="\docs"/>
   </ItemGroup>
 
 </Project>
