@@ -81,6 +81,34 @@ public class AzureKeyValueStore : IKeyValueStore
         return results;
     }
 
+    public async Task<IEnumerable<T>> GetRangeAsync<T>(string hashKey, string sortKeyStart, int count)
+    {
+        var ascending = count >= 0;
+        count = Math.Abs(count);
+
+        var rowKeyStart = RowKey(sortKeyStart);
+
+        var partitionFilter = $"PartitionKey eq '{hashKey}'";
+        var rowFilter = ascending
+            ? $"RowKey ge '{rowKeyStart}'"
+            : $"RowKey lt '{rowKeyStart}'";
+        var response = _client.QueryAsync<TableEntity>(
+            filter: $"{partitionFilter} and {rowFilter}",
+            maxPerPage: count);
+        var results = new List<T>();
+        await foreach (var page in response.AsPages())
+        {
+            if (results.Count == count) break;
+            foreach (var entity in page.Values)
+            {
+                if (results.Count == count) break;
+                var item = Convert<T>(entity);
+                if (item != null) results.Add(item);
+            }
+        }
+        return results;
+    }
+
     public async Task<T> PutAsync<T>(string hashKey, string sortKey, T value)
     {
         var entity = Convert(value);

@@ -83,6 +83,37 @@ between the two given sort keys.
 
 ---
 
+### `Task<IEnumerable<T>> GetRangeAsync<T>(string hashKey, string sortKeyStart, int count)`
+
+Get a number of values stored with the given hash key starting from the given
+sort key.
+
+### Parameters
+
+#### `hashKey` [String]
+
+The hash key of values to retrieve.
+
+#### `sortKeyStart` [String]
+
+The starting sort key.
+
+#### `count` [Int]
+
+The number of values to retrieve. If positive, values with a sort key which is
+greater than or equal to the given sort key will be retrieved. If negative,
+values with a sort key which is strictly less than the given sort key will be
+retrieved.
+
+### Returns
+
+#### [Task]&lt;IEnumerable&lt;T&gt;&gt;
+
+A task representing all values found with the given hash key starting from the
+given sort key.
+
+---
+
 ### `Task<T> PutAsync<t>(string hashKey, string sortKey, T value)`
 
 Set the value which is indexed by the given hash key and sort key. Creates a
@@ -160,6 +191,7 @@ Values are persisted to [Azure Table Storage](azure-table-storage). Suitable
 for production applications deployed to Microsoft Azure.
 
 
+[Int]: https://learn.microsoft.com/en-us/dotnet/api/system.int32
 [String]: https://learn.microsoft.com/en-us/dotnet/api/system.string
 [Task]: https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task
 

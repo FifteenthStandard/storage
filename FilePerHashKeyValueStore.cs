@@ -35,9 +35,34 @@ public class FilePerHashKeyValueStore : IKeyValueStore
 
     public async Task<IEnumerable<T>> GetRangeAsync<T>(string hashKey, string sortKeyStart, string sortKeyEnd)
         => (await LoadBucketAsync(hashKey))
-            .Where(kv => LessThan(sortKeyStart, kv.Key, inclusive: true) && LessThan(kv.Key, sortKeyEnd))
             .OrderBy(kv => kv.Key)
+            .Where(kv => LessThan(sortKeyStart, kv.Key, inclusive: true) && LessThan(kv.Key, sortKeyEnd))
             .Select(kv => (T)Convert<T>(kv.Value));
+
+    public async Task<IEnumerable<T>> GetRangeAsync<T>(string hashKey, string sortKeyStart, int count)
+    {
+        var ascending = count >= 0;
+        count = Math.Abs(count);
+
+        var items = (await LoadBucketAsync(hashKey)).AsEnumerable();
+
+        if (ascending)
+        {
+            items = items
+                .Where(kv => LessThan(sortKeyStart, kv.Key, inclusive: true))
+                .OrderBy(kv => kv.Key)
+                .Take(count);
+        }
+        else
+        {
+            items = items
+                .Where(kv => LessThan(kv.Key, sortKeyStart))
+                .OrderByDescending(kv => kv.Key)
+                .Take(count);
+        }
+
+        return items.Select(kv => (T)kv.Value);
+    }
 
     public async Task<T> PutAsync<T>(string hashKey, string sortKey, T value)
     {

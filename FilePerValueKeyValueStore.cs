@@ -64,6 +64,40 @@ public class FilePerValueKeyValueStore : IKeyValueStore
         return values;
     }
 
+    public async Task<IEnumerable<T>> GetRangeAsync<T>(string hashKey, string sortKeyStart, int count)
+    {
+        var ascending = count >= 0;
+        count = Math.Abs(count);
+
+        var hashDirectory = HashDirectory(hashKey);
+        if (!Directory.Exists(hashDirectory)) return Enumerable.Empty<T>();
+
+        var files = Directory.GetFiles(hashDirectory).AsEnumerable();
+
+        if (ascending)
+        {
+            files = files.OrderBy(Path.GetFileNameWithoutExtension);
+        }
+        else
+        {
+            files = files.OrderByDescending(Path.GetFileNameWithoutExtension);
+        }
+
+        var values = new List<T>();
+        foreach (var file in files)
+        {
+            if (values.Count == count) break;
+
+            var currentSortKey = Path.GetFileNameWithoutExtension(file);
+
+            if (ascending && !LessThan(sortKeyStart, currentSortKey, true)) continue;
+            if (!ascending && !LessThan(currentSortKey, sortKeyStart)) continue;
+
+            values.Add(await GetFromFileAsync<T>(file));
+        }
+        return values;
+    }
+
     public async Task<T> PutAsync<T>(string hashKey, string sortKey, T value)
     {
         var tmpFilename = Filename(hashKey, sortKey, temp: true);

@@ -28,6 +28,31 @@ public class InMemoryKeyValueStore : IKeyValueStore
                 .OrderBy(kv => kv.Key)
                 .Select(kv => (T)kv.Value));
 
+    public Task<IEnumerable<T>> GetRangeAsync<T>(string hashKey, string sortKeyStart, int count)
+    {
+        var ascending = count >= 0;
+        count = Math.Abs(count);
+
+        var items = GetBucket(hashKey).AsEnumerable();
+
+        if (ascending)
+        {
+            items = items
+                .Where(kv => LessThan(sortKeyStart, kv.Key, inclusive: true))
+                .OrderBy(kv => kv.Key)
+                .Take(count);
+        }
+        else
+        {
+            items = items
+                .Where(kv => LessThan(kv.Key, sortKeyStart))
+                .OrderByDescending(kv => kv.Key)
+                .Take(count);
+        }
+
+        return Task.FromResult(items.Select(kv => (T)kv.Value));
+    }
+
     public Task<T> PutAsync<T>(string hashKey, string sortKey, T value)
     {
         if (value == null) throw new ArgumentNullException(nameof(value));
