@@ -7,7 +7,7 @@
     <AssemblyTitle>FifteenthStandard.Storage</AssemblyTitle>
     <AssemblyName>FifteenthStandard.Storage</AssemblyName>
     <PackageId>FifteenthStandard.Storage</PackageId>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <Authors>Curtis Lusmore</Authors>
     <Company>Fifteenth Standard</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="docs\*.md" Pack="true" PackagePath="\docs" />
     <None Include="LICENSE" Pack="true" PackagePath="\" />
   </ItemGroup>
 
