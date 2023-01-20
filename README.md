@@ -126,14 +126,6 @@ Parameter        | Description
 `string hashKey` | The hash key of the value to retrieve
 `string sortKey` | The sort key of the value to retrieve
 
-#### `hashKey` [String]
-
-The hash key of the value to retrieve.
-
-#### `sortKey` [String]
-
-The sort key of the value to retrieve.
-
 #### Returns `Task<T?>`
 
 A task representing the value stored with the given hash key and sort key, or

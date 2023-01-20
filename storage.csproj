@@ -7,11 +7,18 @@
     <AssemblyTitle>FifteenthStandard.Storage</AssemblyTitle>
     <AssemblyName>FifteenthStandard.Storage</AssemblyName>
     <PackageId>FifteenthStandard.Storage</PackageId>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <Authors>Curtis Lusmore</Authors>
     <Company>Fifteenth Standard</Company>
+    <Description>
+      A library with several implementations of generic blob storage and
+      key-value pair storage clients.
+    </Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/FifteenthStandard/storage</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FifteenthStandard/storage.git</RepositoryUrl> 
+    <RepositoryType>git</RepositoryType> 
   </PropertyGroup>
 
   <ItemGroup>
